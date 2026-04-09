@@ -62,7 +62,7 @@ export function Login() {
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
               <img
-                src="/logo-mana.png"
+                src="/34df1ede-9b56-4006-88a7-0e87bbb2c528.png"
                 alt="Maná"
                 className="w-32 h-auto object-contain"
               />
