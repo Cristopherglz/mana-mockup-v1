@@ -41,7 +41,7 @@ export function About() {
     {
       icon: Users,
       title: 'Tradición',
-      description: 'Más de 38 años de experiencia horneando con las recetas de la familia.',
+      description: 'Más de 40 años de experiencia horneando con las recetas de la familia.',
     },
   ];
 
@@ -62,7 +62,7 @@ export function About() {
             </span>
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mt-2">
               El origen del pan <br />
-              <span className="text-mana-green">artesanal</span>
+              <span className="text-mana-green">​</span>
             </h1>
           </div>
         </div>
@@ -78,27 +78,26 @@ export function About() {
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Todo comenzó en 1985, cuando la familia Maná decidió compartir su pasión 
+                  Todo comenzó en 1986, cuando la familia Maná decidió compartir su pasión 
                   por la panadería artesanal con los vecinos de Posadas, Misiones. Lo que 
                   empezó como un pequeño horno familiar, se convirtió en un referente de la 
                   panadería tradicional en la región.
                 </p>
                 <p>
-                  Durante más de tres décadas, hemos mantenido vivas las recetas que nos 
+                  Durante más de cuatro décadas, hemos mantenido vivas las recetas que nos 
                   enseñaron nuestros abuelos, combinándolas con técnicas modernas para 
                   ofrecer productos de la más alta calidad.
                 </p>
                 <p>
                   Cada madrugada, nuestros maestros panaderos se levantan para preparar 
-                  el pan fresco del día, utilizando masa madre de más de 10 años de 
-                  antigüedad y fermentaciones lentas que dan a nuestros productos ese 
+                  el pan fresco del día, con recetas que dan a nuestros productos ese 
                   sabor único e inconfundible.
                 </p>
               </div>
             </div>
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1556217477-d325251ece38?w=800&h=600&fit=crop"
+                src="/team.jpg"
                 alt="Nuestro equipo"
                 className="rounded-2xl shadow-xl"
               />
@@ -191,7 +190,7 @@ export function About() {
               </div>
               <div>
                 <p className="font-medium">Dirección</p>
-                <p className="text-white/80 text-sm">Av. Lavalle 1234, Posadas</p>
+                <p className="text-white/80 text-sm">Av. Uruguay 2677 - Posadas, Misiones</p>
               </div>
             </div>
             <div className="flex items-center gap-4 text-white">
@@ -218,7 +217,7 @@ export function About() {
               </div>
               <div>
                 <p className="font-medium">Horario</p>
-                <p className="text-white/80 text-sm">Lun-Sáb: 6:00 - 20:00</p>
+                <p className="text-white/80 text-sm">24hs</p>
               </div>
             </div>
           </div>
