@@ -42,7 +42,7 @@ export function ProductDetail() {
   const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
-    <div className="min-h-screen pt-20 pb-28 lg:pb-12 bg-mana-cream">
+    <div className="min-h-screen pt-20 pb-28 lg:pb-12 bg-mana-cream my-0 mb-0 -mt-[20px]">
       {/* Back button - absolute over carousel */}
       <div className="absolute top-24 left-4 z-20">
         <button
@@ -59,7 +59,7 @@ export function ProductDetail() {
           <img
             src={product.images[currentImageIndex]}
             alt={product.title}
-            className="w-full h-full object-cover transition-opacity duration-300"
+            className="w-full h-full object-cover transition-opacity duration-300 mt-0 py-0 pb-0 mb-0"
           />
           {!product.hasGluten && (
             <span className="absolute top-4 right-4 gluten-free-badge px-3 py-1.5 text-xs rounded-full z-10">
