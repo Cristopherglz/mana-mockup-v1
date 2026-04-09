@@ -19,7 +19,7 @@ export function SplashScreen({ onFinish }: { onFinish: () => void }) {
       }`}
     >
       <img
-        src="/logo-mana.png"
+        src="/logo-mana-header.png"
         alt="Maná - El origen del pan"
         className="w-48 sm:w-64 object-contain animate-float-logo"
       />

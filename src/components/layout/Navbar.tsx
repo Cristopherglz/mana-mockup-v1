@@ -65,7 +65,7 @@ export function Navbar() {
               style={{ transform: isScrolled ? 'scale(0.9)' : 'scale(1)' }}
             >
               <img
-                src="/logo-mana.png"
+                src="/logo-mana-header.png"
                 alt="Maná - El origen del pan"
                 className="h-10 object-contain"
               />
