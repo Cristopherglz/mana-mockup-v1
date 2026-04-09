@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CreditCard, Banknote, Truck, Store, MapPin, Phone, User, Check } from 'lucide-react';
+import { ArrowLeft, CreditCard, Banknote, Truck, Store, MapPin, Phone, User, Check, CalendarIcon, Clock } from 'lucide-react';
 import { useStore } from '@/store';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
@@ -12,6 +12,8 @@ export function Checkout() {
   const [step, setStep] = useState(1);
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'transfer'>('cash');
+  const [scheduledDate, setScheduledDate] = useState('');
+  const [scheduledTime, setScheduledTime] = useState('');
   const [formData, setFormData] = useState({
     name: user?.name || '',
     lastName: user?.lastName || '',
@@ -99,6 +101,8 @@ export function Checkout() {
         deliveryType,
         deliveryAddress: deliveryType === 'delivery' ? formData.address : undefined,
         notes: formData.notes || undefined,
+        scheduledDate: scheduledDate || undefined,
+        scheduledTime: scheduledTime || undefined,
       });
       
       navigate('/pedido-exito', { state: { order } });
@@ -313,6 +317,37 @@ export function Checkout() {
                       placeholder="Instrucciones especiales para tu pedido..."
                     />
                   </div>
+
+                  {/* Scheduled Date & Time */}
+                  <div>
+                    <label className="form-label">
+                      Programar {deliveryType === 'pickup' ? 'retiro' : 'envío'} (opcional)
+                    </label>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="relative">
+                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input
+                          type="date"
+                          value={scheduledDate}
+                          onChange={(e) => setScheduledDate(e.target.value)}
+                          min={new Date().toISOString().split('T')[0]}
+                          className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-mana-green transition-all"
+                        />
+                      </div>
+                      <div className="relative">
+                        <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input
+                          type="time"
+                          value={scheduledTime}
+                          onChange={(e) => setScheduledTime(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-mana-green transition-all"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Si no programás una fecha, tu pedido se preparará lo antes posible.
+                    </p>
+                  </div>
                 </div>
 
                 <button
@@ -526,6 +561,9 @@ export function Checkout() {
                         <p><span className="text-gray-500">Dirección:</span> {formData.address}</p>
                       )}
                       <p><span className="text-gray-500">Pago:</span> {paymentMethod === 'cash' ? 'Efectivo' : paymentMethod === 'transfer' ? 'Transferencia' : 'Tarjeta'}</p>
+                      {scheduledDate && (
+                        <p><span className="text-gray-500">Fecha programada:</span> {new Date(scheduledDate + 'T00:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })} {scheduledTime && `a las ${scheduledTime}`}</p>
+                      )}
                     </div>
                   </div>
 

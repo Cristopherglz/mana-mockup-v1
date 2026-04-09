@@ -10,10 +10,13 @@ import {
   Trash2,
   ChevronDown,
   ArrowLeft,
-  LogOut
+  LogOut,
+  X,
+  CalendarIcon,
+  Clock
 } from 'lucide-react';
 import { useStore } from '@/store';
-import { categoryLabels, orderStatusLabels, orderStatusColors } from '@/types';
+import { categoryLabels, orderStatusLabels, orderStatusColors, type Order } from '@/types';
 
 export function Admin() {
   const navigate = useNavigate();
@@ -21,6 +24,7 @@ export function Admin() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders'>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   if (!user || user.role !== 'admin') {
     navigate('/');
@@ -317,7 +321,7 @@ export function Admin() {
                   </thead>
                   <tbody>
                     {filteredOrders.map((order) => (
-                      <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50">
+                      <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer" onClick={() => setSelectedOrder(order)}>
                         <td className="py-4 px-4 font-medium">{order.id}</td>
                         <td className="py-4 px-4">
                           <div>
@@ -327,19 +331,9 @@ export function Admin() {
                         </td>
                         <td className="py-4 px-4 font-medium text-mana-burgundy">${order.total.toLocaleString()}</td>
                         <td className="py-4 px-4">
-                          <select
-                            value={order.status}
-                            onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium text-white border-0 cursor-pointer ${orderStatusColors[order.status as keyof typeof orderStatusColors]}`}
-                          >
-                            <option value="pending" className="bg-yellow-500">Pendiente</option>
-                            <option value="confirmed" className="bg-blue-500">Confirmado</option>
-                            <option value="preparing" className="bg-purple-500">En preparación</option>
-                            <option value="ready" className="bg-green-500">Listo</option>
-                            <option value="in_transit" className="bg-sky-500">En camino</option>
-                            <option value="delivered" className="bg-mana-green">Entregado</option>
-                            <option value="cancelled" className="bg-mana-burgundy">Cancelado</option>
-                          </select>
+                          <span className={`px-3 py-1.5 rounded-full text-xs font-medium text-white ${orderStatusColors[order.status as keyof typeof orderStatusColors]}`}>
+                            {orderStatusLabels[order.status]}
+                          </span>
                         </td>
                         <td className="py-4 px-4 text-sm text-gray-500">
                           {new Date(order.createdAt).toLocaleDateString('es-AR')}
@@ -348,6 +342,112 @@ export function Admin() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Order Detail Modal */}
+        {selectedOrder && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setSelectedOrder(null)}>
+            <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                <div>
+                  <h2 className="font-heading font-bold text-xl text-gray-900">Pedido {selectedOrder.id}</h2>
+                  <p className="text-sm text-gray-500">{new Date(selectedOrder.createdAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                </div>
+                <button onClick={() => setSelectedOrder(null)} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Items */}
+                <div>
+                  <h3 className="font-medium text-gray-900 mb-3">Productos</h3>
+                  <div className="space-y-3">
+                    {selectedOrder.items.map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-3">
+                        <img src={item.productImage} alt={item.productName} className="w-14 h-14 rounded-lg object-cover" />
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900">{item.productName}</p>
+                          <p className="text-sm text-gray-500">{item.quantity} x ${item.unitPrice.toLocaleString()}</p>
+                        </div>
+                        <p className="font-medium text-mana-burgundy">${item.total.toLocaleString()}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Client info */}
+                <div className="border-t border-gray-100 pt-4">
+                  <h3 className="font-medium text-gray-900 mb-2">Cliente</h3>
+                  <div className="space-y-1 text-sm">
+                    <p><span className="text-gray-500">Nombre:</span> {selectedOrder.userName}</p>
+                    <p><span className="text-gray-500">Email:</span> {selectedOrder.userEmail}</p>
+                    <p><span className="text-gray-500">Teléfono:</span> {selectedOrder.userPhone}</p>
+                  </div>
+                </div>
+
+                {/* Payment & delivery */}
+                <div className="border-t border-gray-100 pt-4">
+                  <h3 className="font-medium text-gray-900 mb-2">Pago y Entrega</h3>
+                  <div className="space-y-1 text-sm">
+                    <p><span className="text-gray-500">Método de pago:</span> {selectedOrder.paymentMethod === 'cash' ? 'Efectivo' : selectedOrder.paymentMethod === 'transfer' ? 'Transferencia' : 'Tarjeta'}</p>
+                    <p><span className="text-gray-500">Tipo:</span> {selectedOrder.deliveryType === 'pickup' ? 'Retiro en tienda' : 'Delivery'}</p>
+                    {selectedOrder.deliveryAddress && (
+                      <p><span className="text-gray-500">Dirección:</span> {selectedOrder.deliveryAddress}</p>
+                    )}
+                    <p><span className="text-gray-500">Subtotal:</span> ${selectedOrder.subtotal.toLocaleString()}</p>
+                    <p><span className="text-gray-500">Envío:</span> ${selectedOrder.deliveryFee.toLocaleString()}</p>
+                    <p><span className="text-gray-500">Total:</span> <span className="font-bold text-mana-burgundy">${selectedOrder.total.toLocaleString()}</span></p>
+                  </div>
+                </div>
+
+                {/* Scheduled date */}
+                {(selectedOrder.scheduledDate || selectedOrder.scheduledTime) && (
+                  <div className="border-t border-gray-100 pt-4">
+                    <h3 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
+                      <CalendarIcon className="w-4 h-4" /> Programado
+                    </h3>
+                    <div className="text-sm space-y-1">
+                      {selectedOrder.scheduledDate && (
+                        <p><span className="text-gray-500">Fecha:</span> {new Date(selectedOrder.scheduledDate + 'T00:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                      )}
+                      {selectedOrder.scheduledTime && (
+                        <p><span className="text-gray-500">Hora:</span> {selectedOrder.scheduledTime}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {selectedOrder.notes && (
+                  <div className="border-t border-gray-100 pt-4">
+                    <h3 className="font-medium text-gray-900 mb-1">Notas</h3>
+                    <p className="text-sm text-gray-600">{selectedOrder.notes}</p>
+                  </div>
+                )}
+
+                {/* Status change */}
+                <div className="border-t border-gray-100 pt-4">
+                  <h3 className="font-medium text-gray-900 mb-2">Cambiar Estado</h3>
+                  <select
+                    value={selectedOrder.status}
+                    onChange={(e) => {
+                      handleUpdateOrderStatus(selectedOrder.id, e.target.value);
+                      setSelectedOrder({ ...selectedOrder, status: e.target.value as any });
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl text-sm font-medium text-white border-0 cursor-pointer ${orderStatusColors[selectedOrder.status as keyof typeof orderStatusColors]}`}
+                  >
+                    <option value="pending">Pendiente</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="preparing">En preparación</option>
+                    <option value="ready">Listo</option>
+                    <option value="in_transit">En camino</option>
+                    <option value="delivered">Entregado</option>
+                    <option value="cancelled">Cancelado</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
