@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Search, MapPin, ChevronRight, Phone } from 'lucide-react';
+import { ArrowRight, Search, MapPin, Truck, Phone } from 'lucide-react';
 import { useStore } from '@/store';
 import { categoryLabels } from '@/types';
 import { AddToCartButton } from '@/components/ui/AddToCartButton';
@@ -54,14 +54,14 @@ export function Home() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-heading font-bold text-lg">Envío a Domicilio</p>
-                  <p className="text-white/80 text-sm mt-0.5">Av. Uruguay 2977, Posadas</p>
+                  <p className="text-white/80 text-sm mt-0.5">Av. Uruguay 2677</p>
                   <span className="inline-block mt-2 px-3 py-1 bg-white/20 rounded-full text-xs font-medium">
                     <MapPin className="w-3 h-3 inline mr-1" />
                     Posadas y alrededores
                   </span>
                 </div>
                 <Link to="/productos" className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
-                  <ChevronRight className="w-5 h-5 text-white" />
+                  <Truck className="w-5 h-5 text-white" />
                 </Link>
               </div>
             </div>
