@@ -133,6 +133,8 @@ export interface Order {
   deliveryType: 'pickup' | 'delivery';
   deliveryAddress?: string;
   notes?: string;
+  scheduledDate?: string;
+  scheduledTime?: string;
   createdAt: Date;
   updatedAt: Date;
 }

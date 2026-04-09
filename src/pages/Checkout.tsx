@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CreditCard, Banknote, Truck, Store, MapPin, Phone, User, Check } from 'lucide-react';
+import { ArrowLeft, CreditCard, Banknote, Truck, Store, MapPin, Phone, User, Check, CalendarIcon, Clock } from 'lucide-react';
 import { useStore } from '@/store';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
@@ -12,6 +12,8 @@ export function Checkout() {
   const [step, setStep] = useState(1);
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'transfer'>('cash');
+  const [scheduledDate, setScheduledDate] = useState('');
+  const [scheduledTime, setScheduledTime] = useState('');
   const [formData, setFormData] = useState({
     name: user?.name || '',
     lastName: user?.lastName || '',
