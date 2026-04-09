@@ -53,8 +53,8 @@ export function Login() {
           onClick={() => navigate(-1)}
           className="mb-6 flex items-center gap-2 text-gray-600 hover:text-mana-green transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 mt-[10px] my-[9px]" />
-          <span className="my-[26px] mt-[30px]">Volver</span>
+          <ArrowLeft className="w-5 h-5 my-0 mt-0" />
+          <span className="mt-[30px] my-0">Volver</span>
         </button>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
