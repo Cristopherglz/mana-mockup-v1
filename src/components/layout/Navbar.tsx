@@ -53,7 +53,7 @@ export function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-0 pb-[20px] my-0 py-[10px] bg-white shadow-lg"
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-0 my-0 py-[10px] bg-white shadow-lg pb-[10px] pt-[10px]"
         style={{ transitionTimingFunction: 'var(--ease-rise)' }}
       >
         <div className="container-app section-padding">
