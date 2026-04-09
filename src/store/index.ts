@@ -239,6 +239,7 @@ export const useStore = create<AppState>()(
       categories: ['panes', 'facturas', 'tortas', 'sandwiches', 'galletas', 'especialidades'],
       filters: {},
       cart: [],
+      favorites: [],
       orders: sampleOrders,
       userOrders: [],
       isLoading: false,
