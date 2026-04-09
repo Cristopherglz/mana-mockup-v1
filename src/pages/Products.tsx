@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, Filter, X, ChevronDown, Plus } from 'lucide-react';
+import { Search, Filter, X, ChevronDown, Plus, Check } from 'lucide-react';
 import { useStore } from '@/store';
 import { categoryLabels, type Category } from '@/types';
 
@@ -13,6 +13,7 @@ export function Products() {
   const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(
     (searchParams.get('categoria') as Category) || undefined
   );
+  const [addedProducts, setAddedProducts] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const categoryFromUrl = searchParams.get('categoria') as Category;
@@ -46,6 +47,21 @@ export function Products() {
     setSearchParams({});
   };
 
+  const handleAddToCart = useCallback((e: React.MouseEvent, product: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (addedProducts.has(product.id)) return;
+    addToCart(product);
+    setAddedProducts(prev => new Set(prev).add(product.id));
+    setTimeout(() => {
+      setAddedProducts(prev => {
+        const next = new Set(prev);
+        next.delete(product.id);
+        return next;
+      });
+    }, 1800);
+  }, [addToCart, addedProducts]);
+
   const hasActiveFilters = searchQuery || selectedCategory || filters.sortBy;
 
   return (
@@ -63,7 +79,6 @@ export function Products() {
 
         {/* Search and Filter Bar */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          {/* Search */}
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
@@ -83,7 +98,6 @@ export function Products() {
             )}
           </div>
 
-          {/* Filter Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
@@ -101,7 +115,6 @@ export function Products() {
             )}
           </button>
 
-          {/* Sort Dropdown */}
           <div className="relative">
             <select
               value={filters.sortBy || ''}
@@ -135,7 +148,6 @@ export function Products() {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Categories */}
               <div>
                 <label className="form-label">Categoría</label>
                 <div className="flex flex-wrap gap-2">
@@ -165,7 +177,6 @@ export function Products() {
                 </div>
               </div>
 
-              {/* Gluten Filter */}
               <div>
                 <label className="form-label">Contenido de Gluten</label>
                 <div className="flex gap-2">
@@ -202,7 +213,6 @@ export function Products() {
                 </div>
               </div>
 
-              {/* Price Range */}
               <div>
                 <label className="form-label">Rango de Precio</label>
                 <div className="flex items-center gap-3">
@@ -267,50 +277,61 @@ export function Products() {
         {/* Products Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredProducts.map((product) => (
-              <Link
-                key={product.id}
-                to={`/producto/${product.id}`}
-                className="product-card-3d bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 group"
-              >
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={product.images[0]}
-                    alt={product.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  {!product.hasGluten && (
-                    <span className="absolute top-3 left-3 gluten-free-badge">
-                      Sin Gluten
-                    </span>
-                  )}
-                  {product.hasGluten && (
-                    <span className="absolute top-3 left-3 contains-gluten-badge">
-                      Con Gluten
-                    </span>
-                  )}
-                </div>
-                <div className="p-3">
-                  <span className="text-xs text-mana-green font-medium uppercase tracking-wider">
-                    {categoryLabels[product.category]}
-                  </span>
-                  <h3 className="font-heading font-semibold text-sm sm:text-base text-gray-900 mt-1 truncate">
-                    {product.title}
-                  </h3>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="price-tag text-base">
-                      ${product.price.toLocaleString()}
-                    </span>
-                    <button
-                      onClick={(e) => { e.preventDefault(); addToCart(product); }}
-                      className="w-8 h-8 rounded-full bg-mana-green text-white flex items-center justify-center hover:bg-mana-green-dark transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
+            {filteredProducts.map((product) => {
+              const isAdded = addedProducts.has(product.id);
+              return (
+                <Link
+                  key={product.id}
+                  to={`/producto/${product.id}`}
+                  className="product-card-3d bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 group"
+                >
+                  <div className="relative aspect-square overflow-hidden">
+                    <img
+                      src={product.images[0]}
+                      alt={product.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    {!product.hasGluten && (
+                      <span className="absolute top-3 left-3 gluten-free-badge">
+                        Sin Gluten
+                      </span>
+                    )}
+                    {product.hasGluten && (
+                      <span className="absolute top-3 left-3 contains-gluten-badge">
+                        Con Gluten
+                      </span>
+                    )}
                   </div>
-                </div>
-              </Link>
-            ))}
+                  <div className="p-3">
+                    <span className="text-xs text-mana-green font-medium uppercase tracking-wider">
+                      {categoryLabels[product.category]}
+                    </span>
+                    <h3 className="font-heading font-semibold text-sm sm:text-base text-gray-900 mt-1 truncate">
+                      {product.title}
+                    </h3>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="price-tag text-base">
+                        ${product.price.toLocaleString()}
+                      </span>
+                      <button
+                        onClick={(e) => handleAddToCart(e, product)}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                          isAdded
+                            ? 'bg-mana-green text-white scale-110'
+                            : 'bg-mana-green text-white hover:bg-mana-green-dark'
+                        }`}
+                      >
+                        {isAdded ? (
+                          <Check className="w-4 h-4 animate-scale-in" />
+                        ) : (
+                          <Plus className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-16">

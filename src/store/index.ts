@@ -415,7 +415,7 @@ export const useStore = create<AppState>()(
     {
       name: 'mana-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart }),
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart, favorites: state.favorites }),
     }
   )
 );

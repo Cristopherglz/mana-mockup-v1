@@ -1,11 +1,22 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Phone, MapPin, Package, LogOut, Edit2, Save, ArrowRight } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Package, LogOut, Edit2, Save, ArrowRight, Heart, X } from 'lucide-react';
 import { useStore } from '@/store';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 export function Profile() {
   const navigate = useNavigate();
-  const { user, logout, orders } = useStore();
+  const { user, logout, orders, products, favorites, toggleFavorite } = useStore();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -21,9 +32,9 @@ export function Profile() {
 
   const userOrders = orders.filter(o => o.userId === user.id);
   const recentOrders = userOrders.slice(0, 3);
+  const favoriteProducts = products.filter(p => favorites.includes(p.id));
 
   const handleSave = () => {
-    // In a real app, this would update the user profile
     setIsEditing(false);
   };
 
@@ -45,13 +56,28 @@ export function Profile() {
               Gestiona tu información y pedidos
             </p>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-          >
-            <LogOut className="w-5 h-5" />
-            <span className="hidden sm:inline">Cerrar Sesión</span>
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                <LogOut className="w-5 h-5" />
+                <span className="hidden sm:inline">Cerrar Sesión</span>
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="rounded-2xl">
+              <AlertDialogHeader>
+                <AlertDialogTitle>¿Cerrar sesión?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Vas a salir de tu cuenta. ¿Estás seguro?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="rounded-xl">Cancelar</AlertDialogCancel>
+                <AlertDialogAction onClick={handleLogout} className="rounded-xl bg-red-600 hover:bg-red-700">
+                  Sí, salir
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -282,6 +308,54 @@ export function Profile() {
                     className="inline-block mt-3 text-mana-green hover:text-mana-burgundy font-medium"
                   >
                     Hacer mi primer pedido
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Favorite Products */}
+            <div className="bg-white rounded-2xl p-6 shadow-card">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-heading font-semibold text-xl text-gray-900 flex items-center gap-2">
+                  <Heart className="w-5 h-5 text-red-500" />
+                  Mis Productos Favoritos
+                </h2>
+              </div>
+
+              {favoriteProducts.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {favoriteProducts.map((product) => (
+                    <div key={product.id} className="relative group">
+                      <Link
+                        to={`/producto/${product.id}`}
+                        className="block bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-all"
+                      >
+                        <div className="aspect-square overflow-hidden">
+                          <img src={product.images[0]} alt={product.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                        </div>
+                        <div className="p-3">
+                          <h3 className="font-heading font-semibold text-sm text-gray-900 truncate">{product.title}</h3>
+                          <span className="price-tag text-sm">${product.price.toLocaleString()}</span>
+                        </div>
+                      </Link>
+                      <button
+                        onClick={() => toggleFavorite(product.id)}
+                        className="absolute top-2 right-2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm hover:bg-white transition-colors"
+                      >
+                        <X className="w-4 h-4 text-gray-500" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Heart className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">Aún no tenés productos favoritos</p>
+                  <Link
+                    to="/productos"
+                    className="inline-block mt-3 text-mana-green hover:text-mana-burgundy font-medium"
+                  >
+                    Explorar productos
                   </Link>
                 </div>
               )}
