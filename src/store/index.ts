@@ -361,6 +361,17 @@ export const useStore = create<AppState>()(
 
       clearCart: () => { set({ cart: [] }); },
 
+      toggleFavorite: (productId: string) => {
+        set(state => {
+          const isFav = state.favorites.includes(productId);
+          return { favorites: isFav ? state.favorites.filter(id => id !== productId) : [...state.favorites, productId] };
+        });
+      },
+
+      isFavorite: (productId: string) => {
+        return get().favorites.includes(productId);
+      },
+
       getCartTotal: () => {
         return get().cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
       },
