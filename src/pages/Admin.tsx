@@ -10,10 +10,13 @@ import {
   Trash2,
   ChevronDown,
   ArrowLeft,
-  LogOut
+  LogOut,
+  X,
+  CalendarIcon,
+  Clock
 } from 'lucide-react';
 import { useStore } from '@/store';
-import { categoryLabels, orderStatusLabels, orderStatusColors } from '@/types';
+import { categoryLabels, orderStatusLabels, orderStatusColors, type Order } from '@/types';
 
 export function Admin() {
   const navigate = useNavigate();
@@ -21,6 +24,7 @@ export function Admin() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders'>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   if (!user || user.role !== 'admin') {
     navigate('/');
@@ -317,7 +321,7 @@ export function Admin() {
                   </thead>
                   <tbody>
                     {filteredOrders.map((order) => (
-                      <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50">
+                      <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer" onClick={() => setSelectedOrder(order)}>
                         <td className="py-4 px-4 font-medium">{order.id}</td>
                         <td className="py-4 px-4">
                           <div>
@@ -327,19 +331,9 @@ export function Admin() {
                         </td>
                         <td className="py-4 px-4 font-medium text-mana-burgundy">${order.total.toLocaleString()}</td>
                         <td className="py-4 px-4">
-                          <select
-                            value={order.status}
-                            onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium text-white border-0 cursor-pointer ${orderStatusColors[order.status as keyof typeof orderStatusColors]}`}
-                          >
-                            <option value="pending" className="bg-yellow-500">Pendiente</option>
-                            <option value="confirmed" className="bg-blue-500">Confirmado</option>
-                            <option value="preparing" className="bg-purple-500">En preparación</option>
-                            <option value="ready" className="bg-green-500">Listo</option>
-                            <option value="in_transit" className="bg-sky-500">En camino</option>
-                            <option value="delivered" className="bg-mana-green">Entregado</option>
-                            <option value="cancelled" className="bg-mana-burgundy">Cancelado</option>
-                          </select>
+                          <span className={`px-3 py-1.5 rounded-full text-xs font-medium text-white ${orderStatusColors[order.status as keyof typeof orderStatusColors]}`}>
+                            {orderStatusLabels[order.status]}
+                          </span>
                         </td>
                         <td className="py-4 px-4 text-sm text-gray-500">
                           {new Date(order.createdAt).toLocaleDateString('es-AR')}

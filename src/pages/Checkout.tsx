@@ -561,6 +561,9 @@ export function Checkout() {
                         <p><span className="text-gray-500">Dirección:</span> {formData.address}</p>
                       )}
                       <p><span className="text-gray-500">Pago:</span> {paymentMethod === 'cash' ? 'Efectivo' : paymentMethod === 'transfer' ? 'Transferencia' : 'Tarjeta'}</p>
+                      {scheduledDate && (
+                        <p><span className="text-gray-500">Fecha programada:</span> {new Date(scheduledDate + 'T00:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })} {scheduledTime && `a las ${scheduledTime}`}</p>
+                      )}
                     </div>
                   </div>
 
