@@ -2,94 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --background: 40 23% 94%;
+    --foreground: 0 0% 18%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 0 0% 18%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 18%;
+    --primary: 92 13% 49%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 354 42% 32%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 40 23% 90%;
+    --muted-foreground: 0 0% 35%;
+    --accent: 354 42% 32%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 23% 85%;
+    --input: 40 23% 85%;
+    --ring: 92 13% 49%;
+    --radius: 0.625rem;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --ease-dough: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-crumble: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-rise: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-proof: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-knead: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -99,7 +47,242 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-mana-cream text-foreground font-body antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold tracking-tight;
+  }
+
+  button, a, [role="button"] {
+    @apply select-none;
+  }
+
+  @media (pointer: coarse) {
+    button, a, input, select, textarea {
+      @apply min-h-[44px] min-w-[44px];
+    }
+  }
+}
+
+@layer components {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-mana-beige rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-mana-green/40 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-mana-green/60;
+  }
+
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300;
+    transition-timing-function: var(--ease-dough);
+  }
+
+  .card-hover:hover {
+    @apply -translate-y-2 shadow-card-hover;
+  }
+
+  .btn-primary {
+    @apply bg-mana-green text-white px-6 py-3 rounded-lg font-medium;
+    @apply transition-all duration-300;
+    transition-timing-function: var(--ease-dough);
+  }
+
+  .btn-primary:hover {
+    @apply bg-mana-burgundy -translate-y-0.5;
+    box-shadow: 0 10px 30px rgba(114, 47, 55, 0.3);
+  }
+
+  .btn-primary:active {
+    @apply translate-y-0 scale-95;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-mana-green text-mana-green px-6 py-3 rounded-lg font-medium;
+    @apply transition-all duration-300;
+    transition-timing-function: var(--ease-knead);
+  }
+
+  .btn-secondary:hover {
+    @apply bg-mana-green text-white;
+  }
+
+  .input-focus {
+    @apply transition-all duration-200;
+  }
+
+  .input-focus:focus {
+    @apply ring-2 ring-mana-green/30 border-mana-green;
+  }
+
+  .page-enter {
+    @apply animate-fade-in;
+  }
+
+  .product-card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s var(--ease-dough);
+  }
+
+  .product-card-3d:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-8px);
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-mana-green to-mana-burgundy bg-clip-text text-transparent;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 xl:px-12;
+  }
+
+  .container-app {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .nav-link {
+    @apply relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-mana-burgundy;
+    @apply transition-all duration-300;
+    transition-timing-function: var(--ease-knead);
+    transform: translateX(-50%);
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .badge-pulse {
+    animation: badge-pulse 0.3s var(--ease-dough);
+  }
+
+  @keyframes badge-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
+  .skeleton {
+    @apply bg-mana-beige animate-pulse rounded;
+  }
+
+  .mobile-nav-item {
+    @apply flex flex-col items-center justify-center gap-1;
+    @apply text-mana-green/60 transition-all duration-200;
+  }
+
+  .mobile-nav-item.active {
+    @apply text-mana-green;
+  }
+
+  .category-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent;
+    @apply transition-all duration-300;
+  }
+
+  .category-card:hover .category-overlay {
+    @apply from-black/80 via-black/40;
+  }
+
+  .status-badge {
+    @apply px-3 py-1 rounded-full text-xs font-medium text-white;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+
+  .price-tag {
+    @apply inline-flex items-center gap-1 text-lg font-semibold text-mana-burgundy;
+  }
+
+  .gluten-free-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs;
+    @apply bg-green-100 text-green-700;
+  }
+
+  .contains-gluten-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs;
+    @apply bg-amber-100 text-amber-700;
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes float-logo {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float-logo {
+  animation: float-logo 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
