@@ -77,7 +77,7 @@ export function Home() {
               <div className="flex-1 p-5">
                 <h2 className="font-heading text-xl font-bold text-foreground">Pan de Campo</h2>
                 <p className="text-muted-foreground text-sm mt-1">¡Recién horneado!</p>
-                <Link to="/producto/1" className="inline-block mt-3 px-5 py-2 bg-mana-green text-white rounded-full text-sm font-medium hover:bg-mana-green-dark transition-colors">
+                <Link to="/producto/1" className="inline-block px-5 py-2 bg-mana-green text-white rounded-full text-sm font-medium hover:bg-mana-green-dark transition-colors mt-[12px]">
                   Pedir Ahora
                 </Link>
               </div>
@@ -151,16 +151,16 @@ export function Home() {
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-mana-green/10 rounded-2xl -z-10" />
               <div className="absolute bottom-4 left-4 right-4 bg-white rounded-xl shadow-xl p-4">
                 <div className="grid grid-cols-3 gap-3 text-center">
-                  <div><p className="font-heading text-xl font-bold text-mana-green">38+</p><p className="text-[10px] text-muted-foreground">Años</p></div>
-                  <div><p className="font-heading text-xl font-bold text-mana-burgundy">50+</p><p className="text-[10px] text-muted-foreground">Productos</p></div>
+                  <div><p className="font-heading text-xl font-bold text-mana-green">40+</p><p className="text-[10px] text-muted-foreground">Años</p></div>
+                  <div><p className="font-heading text-xl font-bold text-mana-burgundy">200+</p><p className="text-[10px] text-muted-foreground">Productos</p></div>
                   <div><p className="font-heading text-xl font-bold text-mana-green">1000+</p><p className="text-[10px] text-muted-foreground">Clientes</p></div>
                 </div>
               </div>
             </div>
             <div className="about-content">
               <span className="text-mana-burgundy font-medium text-xs uppercase tracking-wider">Nuestra Historia</span>
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mt-2">Más de 38 años de tradición</h2>
-              <p className="text-muted-foreground mt-3 text-sm leading-relaxed">Desde 1985, en el corazón de Posadas, Misiones, la familia Maná ha mantenido viva la tradición de la panadería artesanal.</p>
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mt-2">Más de 40 años de tradición</h2>
+              <p className="text-muted-foreground mt-3 text-sm leading-relaxed">Desde 1986, en el corazón de Posadas, Misiones, la familia Maná ha mantenido viva la tradición de la panadería artesanal.</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/nosotros" className="btn-primary inline-flex items-center gap-2 text-sm">Conocer Más <ArrowRight className="w-4 h-4" /></Link>
                 <a href="tel:+543761234567" className="btn-secondary inline-flex items-center gap-2 text-sm"><Phone className="w-4 h-4" /> Llamar</a>
@@ -178,7 +178,7 @@ export function Home() {
             <div className="absolute top-0 right-0 w-1/2 h-full bg-mana-green/20 skew-x-12 transform origin-top-right" />
             <div className="relative z-10 px-6 py-12 sm:px-12 sm:py-16 text-center">
               <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white mb-3">¿Listo para disfrutar?</h2>
-              <p className="text-white/80 text-sm max-w-xl mx-auto mb-6">Haz tu pedido ahora y recoge en tienda o disfruta de nuestro servicio a domicilio.</p>
+              <p className="text-white/80 text-sm max-w-xl mx-auto mb-6">Hacé tu pedido ahora y retiralo por el local o disfrutá de nuestro servicio a domicilio.</p>
               <Link to="/productos" className="px-6 py-3 bg-white text-mana-burgundy rounded-xl font-semibold hover:bg-mana-cream transition-colors inline-flex items-center gap-2 text-sm">
                 Hacer Pedido <ArrowRight className="w-4 h-4" />
               </Link>
