@@ -206,7 +206,7 @@ export function Navbar() {
           <div className="flex flex-col h-full pt-20 pb-24 px-6">
             <div className="flex flex-col gap-2">
               {navLinks.map((link, index) => (
-                <Link key={link.to} to={link.to} className={`flex items-center gap-3 px-4 py-[12px] mt-[10px] rounded-xl text-base font-medium transition-all ${location.pathname === link.to ? 'bg-mana-green/10 text-mana-green' : 'text-gray-700 hover:bg-gray-50'}`} style={{ animationDelay: `${index * 80}ms`, animation: isMobileMenuOpen ? 'slide-up 0.4s ease-out forwards' : 'none' }}>
+                <Link key={link.to} to={link.to} className={`flex items-center gap-3 px-4 py-[12px] rounded-xl text-base font-medium transition-all ${location.pathname === link.to ? 'bg-mana-green/10 text-mana-green' : 'text-gray-700 hover:bg-gray-50'} mt-0`} style={{ animationDelay: `${index * 80}ms`, animation: isMobileMenuOpen ? 'slide-up 0.4s ease-out forwards' : 'none' }}>
                   {link.label}
                 </Link>
               ))}
