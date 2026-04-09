@@ -47,14 +47,14 @@ export function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-mana-cream py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md mt-[30px]">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
           className="mb-6 flex items-center gap-2 text-gray-600 hover:text-mana-green transition-colors"
         >
           <ArrowLeft className="w-5 h-5 my-0 mt-0" />
-          <span className="mt-[30px] my-0">Volver</span>
+          <span className="my-0 mt-0">Volver</span>
         </button>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
