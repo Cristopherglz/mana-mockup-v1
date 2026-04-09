@@ -90,7 +90,7 @@ export function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-mana-cream py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-lg mt-[30px]">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
