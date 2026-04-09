@@ -31,7 +31,7 @@ export function AdminProductForm() {
   const [newFeature, setNewFeature] = useState('');
   const [newImageUrl, setNewImageUrl] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const fileInputRef = useState<HTMLInputElement | null>(null);
+  
 
   useEffect(() => {
     if (isEditing && existingProduct) {
