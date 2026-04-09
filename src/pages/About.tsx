@@ -90,8 +90,7 @@ export function About() {
                 </p>
                 <p>
                   Cada madrugada, nuestros maestros panaderos se levantan para preparar 
-                  el pan fresco del día, utilizando masa madre de más de 10 años de 
-                  antigüedad y fermentaciones lentas que dan a nuestros productos ese 
+                  el pan fresco del día, con recetas que dan a nuestros productos ese 
                   sabor único e inconfundible.
                 </p>
               </div>
