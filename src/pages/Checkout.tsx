@@ -101,6 +101,8 @@ export function Checkout() {
         deliveryType,
         deliveryAddress: deliveryType === 'delivery' ? formData.address : undefined,
         notes: formData.notes || undefined,
+        scheduledDate: scheduledDate || undefined,
+        scheduledTime: scheduledTime || undefined,
       });
       
       navigate('/pedido-exito', { state: { order } });
@@ -314,6 +316,37 @@ export function Checkout() {
                       rows={3}
                       placeholder="Instrucciones especiales para tu pedido..."
                     />
+                  </div>
+
+                  {/* Scheduled Date & Time */}
+                  <div>
+                    <label className="form-label">
+                      Programar {deliveryType === 'pickup' ? 'retiro' : 'envío'} (opcional)
+                    </label>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="relative">
+                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input
+                          type="date"
+                          value={scheduledDate}
+                          onChange={(e) => setScheduledDate(e.target.value)}
+                          min={new Date().toISOString().split('T')[0]}
+                          className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-mana-green transition-all"
+                        />
+                      </div>
+                      <div className="relative">
+                        <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input
+                          type="time"
+                          value={scheduledTime}
+                          onChange={(e) => setScheduledTime(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-mana-green transition-all"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Si no programás una fecha, tu pedido se preparará lo antes posible.
+                    </p>
                   </div>
                 </div>
 
