@@ -31,6 +31,7 @@ export function AdminProductForm() {
   const [newFeature, setNewFeature] = useState('');
   const [newImageUrl, setNewImageUrl] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
 
   useEffect(() => {
     if (isEditing && existingProduct) {
@@ -118,6 +119,23 @@ export function AdminProductForm() {
 
   const removeImage = (index: number) => {
     setFormData({ ...formData, images: formData.images.filter((_, i) => i !== index) });
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target?.result as string;
+        if (dataUrl && !formData.images.includes(dataUrl)) {
+          setFormData(prev => ({ ...prev, images: [...prev.images, dataUrl] }));
+          if (errors.images) setErrors(prev => ({ ...prev, images: '' }));
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = '';
   };
 
   return (
@@ -278,6 +296,27 @@ export function AdminProductForm() {
           {/* Images */}
           <div>
             <label className="form-label">Imágenes *</label>
+            
+            {/* File upload */}
+            <div className="mb-3">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileUpload}
+                className="hidden"
+                id="image-upload"
+              />
+              <label
+                htmlFor="image-upload"
+                className="flex items-center justify-center gap-2 w-full p-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-mana-green hover:bg-mana-green/5 transition-all"
+              >
+                <Upload className="w-5 h-5 text-gray-400" />
+                <span className="text-gray-500 text-sm">Subir imágenes desde tu dispositivo</span>
+              </label>
+            </div>
+
+            {/* URL input */}
             <div className="flex gap-2 mb-3">
               <input
                 type="text"
@@ -285,14 +324,14 @@ export function AdminProductForm() {
                 onChange={(e) => setNewImageUrl(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addImage())}
                 className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-mana-green"
-                placeholder="URL de la imagen..."
+                placeholder="O pegar URL de imagen..."
               />
               <button
                 type="button"
                 onClick={addImage}
                 className="px-4 py-3 bg-mana-green text-white rounded-xl hover:bg-mana-green-dark transition-colors"
               >
-                <Upload className="w-5 h-5" />
+                <Plus className="w-5 h-5" />
               </button>
             </div>
             {errors.images && <p className="mt-1 text-sm text-red-500">{errors.images}</p>}

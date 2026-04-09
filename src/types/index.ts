@@ -185,6 +185,11 @@ export interface AppState {
   clearCart: () => void;
   getCartTotal: () => number;
   getCartCount: () => number;
+
+  // Favorites
+  favorites: string[];
+  toggleFavorite: (productId: string) => void;
+  isFavorite: (productId: string) => boolean;
   
   // Orders
   orders: Order[];

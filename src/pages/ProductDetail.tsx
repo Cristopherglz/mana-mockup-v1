@@ -8,12 +8,11 @@ import { AddToCartButton } from '@/components/ui/AddToCartButton';
 export function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products } = useStore();
+  const { products, toggleFavorite, isFavorite } = useStore();
   
   const product = useMemo(() => products.find(p => p.id === id), [products, id]);
   
   const [quantity, setQuantity] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!product) {
@@ -30,6 +29,7 @@ export function ProductDetail() {
   }
 
   const totalPrice = product.price * quantity;
+  const productIsFavorite = isFavorite(product.id);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
@@ -121,12 +121,12 @@ export function ProductDetail() {
               <p className="text-xs text-muted-foreground mt-1">${product.price.toLocaleString('es-AR')}/u</p>
             </div>
             <button
-              onClick={() => setIsFavorite(!isFavorite)}
+              onClick={() => toggleFavorite(product.id)}
               className="mt-1 flex-shrink-0"
             >
               <Heart
                 className={`w-6 h-6 transition-colors ${
-                  isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-300'
+                  productIsFavorite ? 'fill-red-500 text-red-500' : 'text-gray-300'
                 }`}
               />
             </button>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -17,6 +17,17 @@ import {
 } from 'lucide-react';
 import { useStore } from '@/store';
 import { categoryLabels, orderStatusLabels, orderStatusColors, type Order } from '@/types';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 export function Admin() {
   const navigate = useNavigate();
@@ -25,6 +36,31 @@ export function Admin() {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const prevOrderCountRef = useRef(orders.length);
+
+  // Play bell sound when new order arrives
+  useEffect(() => {
+    if (orders.length > prevOrderCountRef.current) {
+      // New order detected - play bell sound
+      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const playBell = (freq: number, startTime: number) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime + startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + startTime + 0.8);
+        osc.start(audioCtx.currentTime + startTime);
+        osc.stop(audioCtx.currentTime + startTime + 0.8);
+      };
+      playBell(830, 0);
+      playBell(1050, 0.15);
+      playBell(830, 0.3);
+    }
+    prevOrderCountRef.current = orders.length;
+  }, [orders.length]);
 
   if (!user || user.role !== 'admin') {
     navigate('/');
@@ -82,13 +118,28 @@ export function Admin() {
               <p className="text-gray-500 text-sm">Bienvenido, {user.name}</p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Cerrar Sesión</span>
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                <LogOut className="w-5 h-5" />
+                <span>Cerrar Sesión</span>
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="rounded-2xl">
+              <AlertDialogHeader>
+                <AlertDialogTitle>¿Cerrar sesión?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Vas a salir de tu cuenta. ¿Estás seguro?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="rounded-xl">Cancelar</AlertDialogCancel>
+                <AlertDialogAction onClick={handleLogout} className="rounded-xl bg-red-600 hover:bg-red-700">
+                  Sí, salir
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         {/* Tabs */}

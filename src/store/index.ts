@@ -239,6 +239,7 @@ export const useStore = create<AppState>()(
       categories: ['panes', 'facturas', 'tortas', 'sandwiches', 'galletas', 'especialidades'],
       filters: {},
       cart: [],
+      favorites: [],
       orders: sampleOrders,
       userOrders: [],
       isLoading: false,
@@ -360,6 +361,17 @@ export const useStore = create<AppState>()(
 
       clearCart: () => { set({ cart: [] }); },
 
+      toggleFavorite: (productId: string) => {
+        set(state => {
+          const isFav = state.favorites.includes(productId);
+          return { favorites: isFav ? state.favorites.filter(id => id !== productId) : [...state.favorites, productId] };
+        });
+      },
+
+      isFavorite: (productId: string) => {
+        return get().favorites.includes(productId);
+      },
+
       getCartTotal: () => {
         return get().cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
       },
@@ -403,7 +415,7 @@ export const useStore = create<AppState>()(
     {
       name: 'mana-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart }),
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart, favorites: state.favorites }),
     }
   )
 );
