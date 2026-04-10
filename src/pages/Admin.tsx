@@ -154,6 +154,7 @@ export function Admin() {
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
             { id: 'products', label: 'Productos', icon: Package },
             { id: 'orders', label: 'Pedidos', icon: ShoppingBag },
+            { id: 'settings', label: 'Ajustes', icon: Settings },
           ].map((tab) => (
             <button
               key={tab.id}
