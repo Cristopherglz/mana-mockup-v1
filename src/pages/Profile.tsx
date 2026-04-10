@@ -83,7 +83,7 @@ export function Profile() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Profile Card */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl p-6 shadow-card">
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
               <div className="text-center">
                 <div className="w-24 h-24 bg-mana-green rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-white text-3xl font-heading font-bold">
@@ -122,7 +122,7 @@ export function Profile() {
             </div>
 
             {/* Quick Actions */}
-            <div className="mt-6 bg-white rounded-2xl p-4 shadow-card">
+            <div className="mt-6 bg-white rounded-2xl p-4 shadow-xl">
               <h3 className="font-medium text-gray-900 mb-3">Acciones Rápidas</h3>
               <div className="space-y-2">
                 <Link
@@ -155,7 +155,7 @@ export function Profile() {
           {/* Edit Profile & Orders */}
           <div className="lg:col-span-2 space-y-6">
             {/* Edit Profile */}
-            <div className="bg-white rounded-2xl p-6 shadow-card">
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-heading font-semibold text-xl text-gray-900">
                   Información Personal
@@ -248,7 +248,7 @@ export function Profile() {
             </div>
 
             {/* Recent Orders */}
-            <div className="bg-white rounded-2xl p-6 shadow-card">
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-heading font-semibold text-xl text-gray-900">
                   Pedidos Recientes
@@ -314,7 +314,7 @@ export function Profile() {
             </div>
 
             {/* Favorite Products */}
-            <div className="bg-white rounded-2xl p-6 shadow-card">
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-heading font-semibold text-xl text-gray-900 flex items-center gap-2">
                   <Heart className="w-5 h-5 text-red-500" />
