@@ -207,8 +207,12 @@ export interface AppState {
   // Orders
   orders: Order[];
   userOrders: Order[];
-  createOrder: (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => Promise<Order>;
+  createOrder: (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'paymentStatus'>) => Promise<Order>;
   updateOrderStatus: (orderId: string, status: OrderStatus) => Promise<void>;
+  
+  // Settings
+  minDeliveryAmount: number;
+  setMinDeliveryAmount: (amount: number) => void;
   
   // UI
   isLoading: boolean;
