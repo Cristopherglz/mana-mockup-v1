@@ -13,10 +13,12 @@ import {
   LogOut,
   X,
   CalendarIcon,
-  Clock
+  Clock,
+  Settings,
+  Truck
 } from 'lucide-react';
 import { useStore } from '@/store';
-import { categoryLabels, orderStatusLabels, orderStatusColors, type Order } from '@/types';
+import { categoryLabels, orderStatusLabels, orderStatusColors, paymentStatusLabels, paymentStatusColors, type Order } from '@/types';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,11 +33,12 @@ import {
 
 export function Admin() {
   const navigate = useNavigate();
-  const { user, logout, products, orders, deleteProduct, updateOrderStatus } = useStore();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders'>('dashboard');
+  const { user, logout, products, orders, deleteProduct, updateOrderStatus, minDeliveryAmount, setMinDeliveryAmount } = useStore();
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders' | 'settings'>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [deliveryAmountInput, setDeliveryAmountInput] = useState(minDeliveryAmount.toString());
   const prevOrderCountRef = useRef(orders.length);
 
   // Play bell sound when new order arrives
@@ -72,16 +75,19 @@ export function Admin() {
     p.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredOrders = orders.filter(o => {
+  // Only show paid orders in admin
+  const paidOrders = orders.filter(o => o.paymentStatus === 'paid');
+
+  const filteredOrders = paidOrders.filter(o => {
     if (statusFilter === 'all') return true;
     return o.status === statusFilter;
   });
 
   const stats = {
     totalProducts: products.length,
-    totalOrders: orders.length,
-    pendingOrders: orders.filter(o => o.status === 'pending').length,
-    totalRevenue: orders.reduce((acc, o) => acc + o.total, 0),
+    totalOrders: paidOrders.length,
+    pendingOrders: paidOrders.filter(o => o.status === 'pending').length,
+    totalRevenue: paidOrders.reduce((acc, o) => acc + o.total, 0),
   };
 
   const handleDeleteProduct = async (id: string) => {
