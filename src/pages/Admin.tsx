@@ -224,15 +224,21 @@ export function Admin() {
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Pedido</th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Cliente</th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Total</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Pago</th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Estado</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.slice(0, 5).map((order) => (
+                    {paidOrders.slice(0, 5).map((order) => (
                       <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50">
                         <td className="py-3 px-4 font-medium">{order.id}</td>
                         <td className="py-3 px-4 text-gray-600">{order.userName}</td>
                         <td className="py-3 px-4 font-medium text-mana-burgundy">${order.total.toLocaleString()}</td>
+                        <td className="py-3 px-4">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${paymentStatusColors[order.paymentStatus]}`}>
+                            {paymentStatusLabels[order.paymentStatus]}
+                          </span>
+                        </td>
                         <td className="py-3 px-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${orderStatusColors[order.status]}`}>
                             {orderStatusLabels[order.status]}
@@ -373,6 +379,7 @@ export function Admin() {
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Pedido</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Cliente</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Total</th>
+                      <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Pago</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Estado</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Fecha</th>
                     </tr>
@@ -388,6 +395,11 @@ export function Admin() {
                           </div>
                         </td>
                         <td className="py-4 px-4 font-medium text-mana-burgundy">${order.total.toLocaleString()}</td>
+                        <td className="py-4 px-4">
+                          <span className={`px-3 py-1.5 rounded-full text-xs font-medium text-white ${paymentStatusColors[order.paymentStatus]}`}>
+                            {paymentStatusLabels[order.paymentStatus]}
+                          </span>
+                        </td>
                         <td className="py-4 px-4">
                           <span className={`px-3 py-1.5 rounded-full text-xs font-medium text-white ${orderStatusColors[order.status as keyof typeof orderStatusColors]}`}>
                             {orderStatusLabels[order.status]}
