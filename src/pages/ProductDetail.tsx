@@ -112,7 +112,7 @@ export function ProductDetail() {
 
       {/* Product Info Card */}
       <div className="container-app section-padding -mt-4 relative z-10">
-        <div className="bg-white rounded-3xl shadow-card p-6 space-y-5">
+        <div className="bg-white rounded-3xl p-6 space-y-5 shadow-xl mt-0">
           {/* Title + Favorite */}
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -137,7 +137,7 @@ export function ProductDetail() {
             <div className="flex items-center gap-3 bg-gray-100 rounded-full p-1">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-9 h-9 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors shadow-md"
+                className="w-9 h-9 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors shadow-xl"
               >
                 <Minus className="w-4 h-4 text-gray-600" />
               </button>
@@ -146,7 +146,7 @@ export function ProductDetail() {
               </span>
               <button
                 onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                className="w-9 h-9 rounded-full bg-mana-green flex items-center justify-center hover:bg-mana-green-dark transition-colors shadow-md"
+                className="w-9 h-9 rounded-full bg-mana-green flex items-center justify-center hover:bg-mana-green-dark transition-colors shadow-xl"
               >
                 <Plus className="w-4 h-4 text-white" />
               </button>
