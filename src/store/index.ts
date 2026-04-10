@@ -244,6 +244,7 @@ export const useStore = create<AppState>()(
       userOrders: [],
       isLoading: false,
       notification: null,
+      minDeliveryAmount: 3000,
 
       login: async (email: string, password: string) => {
         set({ isLoading: true });
@@ -383,7 +384,7 @@ export const useStore = create<AppState>()(
       createOrder: async (orderData) => {
         set({ isLoading: true });
         await new Promise(resolve => setTimeout(resolve, 1000));
-        const newOrder: Order = { id: `ORD-${Date.now().toString().slice(-6)}`, ...orderData, status: 'pending', createdAt: new Date(), updatedAt: new Date() };
+        const newOrder: Order = { id: `ORD-${Date.now().toString().slice(-6)}`, ...orderData, status: 'pending', paymentStatus: 'paid', createdAt: new Date(), updatedAt: new Date() };
         set(state => ({
           orders: [...state.orders, newOrder],
           userOrders: state.user?.id === orderData.userId ? [...state.userOrders, newOrder] : state.userOrders,
@@ -411,11 +412,12 @@ export const useStore = create<AppState>()(
         setTimeout(() => { set({ notification: null }); }, 3000);
       },
       clearNotification: () => set({ notification: null }),
+      setMinDeliveryAmount: (amount: number) => set({ minDeliveryAmount: amount }),
     }),
     {
       name: 'mana-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart, favorites: state.favorites }),
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart, favorites: state.favorites, minDeliveryAmount: state.minDeliveryAmount }),
     }
   )
 );
