@@ -619,8 +619,8 @@ export function Checkout() {
                 </div>
                 <div className="flex items-center justify-between text-sm text-gray-600">
                   <span>Envío</span>
-                  <span className={deliveryType === 'pickup' ? 'text-green-600' : ''}>
-                    {deliveryType === 'pickup' ? 'Gratis' : '$500'}
+                  <span className={deliveryType === 'delivery' && canDelivery ? 'text-green-600' : !canDelivery ? 'text-gray-400' : ''}>
+                    {deliveryType === 'delivery' && canDelivery ? 'Incluido' : !canDelivery ? 'No aplica' : 'Gratis'}
                   </span>
                 </div>
               </div>
