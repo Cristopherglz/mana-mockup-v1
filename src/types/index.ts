@@ -80,6 +80,18 @@ export interface Cart {
 }
 
 // Order types
+export type PaymentStatus = 'pending' | 'paid';
+
+export const paymentStatusLabels: Record<PaymentStatus, string> = {
+  pending: 'Pendiente de pago',
+  paid: 'Pagado',
+};
+
+export const paymentStatusColors: Record<PaymentStatus, string> = {
+  pending: 'bg-yellow-500',
+  paid: 'bg-green-600',
+};
+
 export type OrderStatus = 
   | 'pending'
   | 'confirmed'
@@ -129,6 +141,7 @@ export interface Order {
   deliveryFee: number;
   total: number;
   status: OrderStatus;
+  paymentStatus: PaymentStatus;
   paymentMethod: 'cash' | 'card' | 'transfer';
   deliveryType: 'pickup' | 'delivery';
   deliveryAddress?: string;
@@ -194,8 +207,12 @@ export interface AppState {
   // Orders
   orders: Order[];
   userOrders: Order[];
-  createOrder: (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => Promise<Order>;
+  createOrder: (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'paymentStatus'>) => Promise<Order>;
   updateOrderStatus: (orderId: string, status: OrderStatus) => Promise<void>;
+  
+  // Settings
+  minDeliveryAmount: number;
+  setMinDeliveryAmount: (amount: number) => void;
   
   // UI
   isLoading: boolean;

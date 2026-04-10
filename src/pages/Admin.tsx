@@ -13,10 +13,12 @@ import {
   LogOut,
   X,
   CalendarIcon,
-  Clock
+  Clock,
+  Settings,
+  Truck
 } from 'lucide-react';
 import { useStore } from '@/store';
-import { categoryLabels, orderStatusLabels, orderStatusColors, type Order } from '@/types';
+import { categoryLabels, orderStatusLabels, orderStatusColors, paymentStatusLabels, paymentStatusColors, type Order } from '@/types';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,11 +33,12 @@ import {
 
 export function Admin() {
   const navigate = useNavigate();
-  const { user, logout, products, orders, deleteProduct, updateOrderStatus } = useStore();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders'>('dashboard');
+  const { user, logout, products, orders, deleteProduct, updateOrderStatus, minDeliveryAmount, setMinDeliveryAmount } = useStore();
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders' | 'settings'>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [deliveryAmountInput, setDeliveryAmountInput] = useState(minDeliveryAmount.toString());
   const prevOrderCountRef = useRef(orders.length);
 
   // Play bell sound when new order arrives
@@ -72,16 +75,19 @@ export function Admin() {
     p.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredOrders = orders.filter(o => {
+  // Only show paid orders in admin
+  const paidOrders = orders.filter(o => o.paymentStatus === 'paid');
+
+  const filteredOrders = paidOrders.filter(o => {
     if (statusFilter === 'all') return true;
     return o.status === statusFilter;
   });
 
   const stats = {
     totalProducts: products.length,
-    totalOrders: orders.length,
-    pendingOrders: orders.filter(o => o.status === 'pending').length,
-    totalRevenue: orders.reduce((acc, o) => acc + o.total, 0),
+    totalOrders: paidOrders.length,
+    pendingOrders: paidOrders.filter(o => o.status === 'pending').length,
+    totalRevenue: paidOrders.reduce((acc, o) => acc + o.total, 0),
   };
 
   const handleDeleteProduct = async (id: string) => {
@@ -148,6 +154,7 @@ export function Admin() {
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
             { id: 'products', label: 'Productos', icon: Package },
             { id: 'orders', label: 'Pedidos', icon: ShoppingBag },
+            { id: 'settings', label: 'Ajustes', icon: Settings },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -217,15 +224,21 @@ export function Admin() {
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Pedido</th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Cliente</th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Total</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Pago</th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Estado</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.slice(0, 5).map((order) => (
+                    {paidOrders.slice(0, 5).map((order) => (
                       <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50">
                         <td className="py-3 px-4 font-medium">{order.id}</td>
                         <td className="py-3 px-4 text-gray-600">{order.userName}</td>
                         <td className="py-3 px-4 font-medium text-mana-burgundy">${order.total.toLocaleString()}</td>
+                        <td className="py-3 px-4">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${paymentStatusColors[order.paymentStatus]}`}>
+                            {paymentStatusLabels[order.paymentStatus]}
+                          </span>
+                        </td>
                         <td className="py-3 px-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${orderStatusColors[order.status]}`}>
                             {orderStatusLabels[order.status]}
@@ -366,6 +379,7 @@ export function Admin() {
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Pedido</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Cliente</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Total</th>
+                      <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Pago</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Estado</th>
                       <th className="text-left py-4 px-4 text-sm font-medium text-gray-500">Fecha</th>
                     </tr>
@@ -381,6 +395,11 @@ export function Admin() {
                           </div>
                         </td>
                         <td className="py-4 px-4 font-medium text-mana-burgundy">${order.total.toLocaleString()}</td>
+                        <td className="py-4 px-4">
+                          <span className={`px-3 py-1.5 rounded-full text-xs font-medium text-white ${paymentStatusColors[order.paymentStatus]}`}>
+                            {paymentStatusLabels[order.paymentStatus]}
+                          </span>
+                        </td>
                         <td className="py-4 px-4">
                           <span className={`px-3 py-1.5 rounded-full text-xs font-medium text-white ${orderStatusColors[order.status as keyof typeof orderStatusColors]}`}>
                             {orderStatusLabels[order.status]}
@@ -398,7 +417,48 @@ export function Admin() {
           </div>
         )}
 
-        {/* Order Detail Modal */}
+        {/* Settings */}
+        {activeTab === 'settings' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl shadow-card p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-mana-green/10 rounded-xl flex items-center justify-center">
+                  <Truck className="w-5 h-5 text-mana-green" />
+                </div>
+                <div>
+                  <h2 className="font-heading font-semibold text-lg text-gray-900">Monto mínimo para envío a domicilio</h2>
+                  <p className="text-sm text-gray-500">Los clientes podrán elegir envío a domicilio solo si su compra supera este monto.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="relative flex-1 max-w-xs">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+                  <input
+                    type="number"
+                    value={deliveryAmountInput}
+                    onChange={(e) => setDeliveryAmountInput(e.target.value)}
+                    className="w-full pl-8 pr-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-mana-green"
+                    min="0"
+                    step="100"
+                  />
+                </div>
+                <button
+                  onClick={() => {
+                    const val = parseInt(deliveryAmountInput);
+                    if (!isNaN(val) && val >= 0) {
+                      setMinDeliveryAmount(val);
+                    }
+                  }}
+                  className="btn-primary px-6"
+                >
+                  Guardar
+                </button>
+              </div>
+              <p className="mt-3 text-sm text-gray-400">Monto actual: <span className="font-medium text-gray-700">${minDeliveryAmount.toLocaleString()}</span></p>
+            </div>
+          </div>
+        )}
+
         {selectedOrder && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setSelectedOrder(null)}>
             <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl" onClick={(e) => e.stopPropagation()}>

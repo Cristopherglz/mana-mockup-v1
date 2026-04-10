@@ -205,7 +205,7 @@ const sampleOrders: Order[] = [
       { productId: '1', productName: 'Pan de Campo', productImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=800&fit=crop', quantity: 2, unitPrice: 450, total: 900 },
       { productId: '2', productName: 'Medialunas de Manteca', productImage: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&h=800&fit=crop', quantity: 6, unitPrice: 380, total: 2280 },
     ],
-    subtotal: 3180, deliveryFee: 0, total: 3180, status: 'delivered', paymentMethod: 'cash', deliveryType: 'pickup',
+    subtotal: 3180, deliveryFee: 0, total: 3180, status: 'delivered', paymentStatus: 'paid', paymentMethod: 'cash', deliveryType: 'pickup',
     createdAt: new Date('2024-03-01'), updatedAt: new Date('2024-03-01'),
   },
   {
@@ -217,7 +217,7 @@ const sampleOrders: Order[] = [
     items: [
       { productId: '6', productName: 'Torta de Chocolate', productImage: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&h=800&fit=crop', quantity: 1, unitPrice: 8500, total: 8500 },
     ],
-    subtotal: 8500, deliveryFee: 500, total: 9000, status: 'ready', paymentMethod: 'transfer', deliveryType: 'delivery',
+    subtotal: 8500, deliveryFee: 500, total: 9000, status: 'ready', paymentStatus: 'paid', paymentMethod: 'transfer', deliveryType: 'delivery',
     deliveryAddress: 'Av. Lavalle 567, Posadas',
     notes: 'Es para un cumpleaños, por favor poner velitas.',
     createdAt: new Date('2024-03-05'), updatedAt: new Date('2024-03-05'),
@@ -244,6 +244,7 @@ export const useStore = create<AppState>()(
       userOrders: [],
       isLoading: false,
       notification: null,
+      minDeliveryAmount: 3000,
 
       login: async (email: string, password: string) => {
         set({ isLoading: true });
@@ -383,7 +384,7 @@ export const useStore = create<AppState>()(
       createOrder: async (orderData) => {
         set({ isLoading: true });
         await new Promise(resolve => setTimeout(resolve, 1000));
-        const newOrder: Order = { id: `ORD-${Date.now().toString().slice(-6)}`, ...orderData, status: 'pending', createdAt: new Date(), updatedAt: new Date() };
+        const newOrder: Order = { id: `ORD-${Date.now().toString().slice(-6)}`, ...orderData, status: 'pending', paymentStatus: 'paid', createdAt: new Date(), updatedAt: new Date() };
         set(state => ({
           orders: [...state.orders, newOrder],
           userOrders: state.user?.id === orderData.userId ? [...state.userOrders, newOrder] : state.userOrders,
@@ -411,11 +412,12 @@ export const useStore = create<AppState>()(
         setTimeout(() => { set({ notification: null }); }, 3000);
       },
       clearNotification: () => set({ notification: null }),
+      setMinDeliveryAmount: (amount: number) => set({ minDeliveryAmount: amount }),
     }),
     {
       name: 'mana-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart, favorites: state.favorites }),
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated, cart: state.cart, favorites: state.favorites, minDeliveryAmount: state.minDeliveryAmount }),
     }
   )
 );
