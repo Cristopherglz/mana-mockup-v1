@@ -12,6 +12,16 @@ import {
   ShoppingCart
 } from 'lucide-react';
 import { useStore } from '@/store';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,6 +51,13 @@ export function Navbar() {
     logout();
     navigate('/');
     setIsUserMenuOpen(false);
+    setShowLogoutDialog(false);
+  };
+
+  const promptLogout = () => {
+    setIsUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
+    setShowLogoutDialog(true);
   };
 
   const navLinks = [
@@ -165,7 +182,7 @@ export function Navbar() {
                       )}
                       
                       <div className="border-t border-gray-100 mt-2 pt-2">
-                        <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 w-full hover:bg-red-50 transition-colors">
+                        <button onClick={promptLogout} className="flex items-center gap-3 px-4 py-2.5 w-full hover:bg-red-50 transition-colors">
                           <LogOut className="w-4 h-4 text-red-500" />
                           <span className="text-sm text-red-600">Cerrar Sesión</span>
                         </button>
@@ -230,7 +247,7 @@ export function Navbar() {
                 {isAdmin && (
                   <Link to="/admin" className="flex items-center gap-3 px-4 py-3 text-mana-burgundy"><Settings className="w-5 h-5" /><span>Panel Admin</span></Link>
                 )}
-                <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 text-red-500 w-full"><LogOut className="w-5 h-5" /><span>Cerrar Sesión</span></button>
+                <button onClick={promptLogout} className="flex items-center gap-3 px-4 py-3 text-red-500 w-full"><LogOut className="w-5 h-5" /><span>Cerrar Sesión</span></button>
               </div>
             )}
           </div>
