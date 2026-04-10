@@ -146,7 +146,7 @@ export function Checkout() {
           <span>{step > 1 ? 'Volver' : 'Volver al carrito'}</span>
         </button>
 
-        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-[8px]">
           Finalizar Compra
         </h1>
 
@@ -289,7 +289,7 @@ export function Checkout() {
                           <Truck className="w-6 h-6 text-gray-300" />
                           <div className="text-left">
                             <p className="font-medium text-gray-400">Delivery</p>
-                            <p className="text-xs text-gray-400">Mínimo ${minDeliveryAmount.toLocaleString()} para envío</p>
+                            <p className="text-xs text-gray-400">Mínimo de compra ${minDeliveryAmount.toLocaleString()} para envíos</p>
                           </div>
                         </div>
                       )}
