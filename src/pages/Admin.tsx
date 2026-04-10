@@ -417,7 +417,48 @@ export function Admin() {
           </div>
         )}
 
-        {/* Order Detail Modal */}
+        {/* Settings */}
+        {activeTab === 'settings' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl shadow-card p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-mana-green/10 rounded-xl flex items-center justify-center">
+                  <Truck className="w-5 h-5 text-mana-green" />
+                </div>
+                <div>
+                  <h2 className="font-heading font-semibold text-lg text-gray-900">Monto mínimo para envío a domicilio</h2>
+                  <p className="text-sm text-gray-500">Los clientes podrán elegir envío a domicilio solo si su compra supera este monto.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="relative flex-1 max-w-xs">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+                  <input
+                    type="number"
+                    value={deliveryAmountInput}
+                    onChange={(e) => setDeliveryAmountInput(e.target.value)}
+                    className="w-full pl-8 pr-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-mana-green"
+                    min="0"
+                    step="100"
+                  />
+                </div>
+                <button
+                  onClick={() => {
+                    const val = parseInt(deliveryAmountInput);
+                    if (!isNaN(val) && val >= 0) {
+                      setMinDeliveryAmount(val);
+                    }
+                  }}
+                  className="btn-primary px-6"
+                >
+                  Guardar
+                </button>
+              </div>
+              <p className="mt-3 text-sm text-gray-400">Monto actual: <span className="font-medium text-gray-700">${minDeliveryAmount.toLocaleString()}</span></p>
+            </div>
+          </div>
+        )}
+
         {selectedOrder && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setSelectedOrder(null)}>
             <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl" onClick={(e) => e.stopPropagation()}>
