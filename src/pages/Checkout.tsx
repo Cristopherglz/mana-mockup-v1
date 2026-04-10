@@ -6,8 +6,9 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 export function Checkout() {
   const navigate = useNavigate();
-  const { cart, getCartTotal, user, createOrder, isLoading } = useStore();
+  const { cart, getCartTotal, user, createOrder, isLoading, minDeliveryAmount } = useStore();
   const cartTotal = getCartTotal();
+  const canDelivery = cartTotal >= minDeliveryAmount;
   
   const [step, setStep] = useState(1);
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup');
@@ -265,23 +266,33 @@ export function Checkout() {
                           <p className="text-sm text-gray-500">Gratis</p>
                         </div>
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setDeliveryType('delivery')}
-                        className={`flex items-center gap-3 p-4 border-2 rounded-xl transition-all ${
-                          deliveryType === 'delivery'
-                            ? 'border-mana-green bg-mana-green/5'
-                            : 'border-gray-200 hover:border-mana-green/50'
-                        }`}
-                      >
-                        <Truck className={`w-6 h-6 ${deliveryType === 'delivery' ? 'text-mana-green' : 'text-gray-400'}`} />
-                        <div className="text-left">
-                          <p className={`font-medium ${deliveryType === 'delivery' ? 'text-mana-green' : 'text-gray-700'}`}>
-                            Delivery
-                          </p>
-                          <p className="text-sm text-gray-500">$500</p>
+                      {canDelivery ? (
+                        <button
+                          type="button"
+                          onClick={() => setDeliveryType('delivery')}
+                          className={`flex items-center gap-3 p-4 border-2 rounded-xl transition-all ${
+                            deliveryType === 'delivery'
+                              ? 'border-mana-green bg-mana-green/5'
+                              : 'border-gray-200 hover:border-mana-green/50'
+                          }`}
+                        >
+                          <Truck className={`w-6 h-6 ${deliveryType === 'delivery' ? 'text-mana-green' : 'text-gray-400'}`} />
+                          <div className="text-left">
+                            <p className={`font-medium ${deliveryType === 'delivery' ? 'text-mana-green' : 'text-gray-700'}`}>
+                              Delivery
+                            </p>
+                            <p className="text-sm text-gray-500">$500</p>
+                          </div>
+                        </button>
+                      ) : (
+                        <div className="flex items-center gap-3 p-4 border-2 border-gray-100 rounded-xl bg-gray-50 opacity-60 cursor-not-allowed">
+                          <Truck className="w-6 h-6 text-gray-300" />
+                          <div className="text-left">
+                            <p className="font-medium text-gray-400">Delivery</p>
+                            <p className="text-xs text-gray-400">Mínimo ${minDeliveryAmount.toLocaleString()} para envío</p>
+                          </div>
                         </div>
-                      </button>
+                      )}
                     </div>
                   </div>
 
