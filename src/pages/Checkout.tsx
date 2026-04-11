@@ -604,9 +604,9 @@ export function Checkout() {
 
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl p-6 shadow-card sticky top-24">
+            <div className="bg-white rounded-2xl p-6 sticky top-24 shadow-card">
               <h2 className="font-heading font-semibold text-lg text-gray-900 mb-4">
-                Resumen
+                Resumen de compra
               </h2>
 
               <div className="space-y-2 mb-4">
