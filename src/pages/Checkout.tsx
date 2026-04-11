@@ -618,9 +618,9 @@ export function Checkout() {
                   <span>${cartTotal.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>Envío</span>
-                  <span className={deliveryType === 'delivery' && canDelivery ? 'text-green-600' : !canDelivery ? 'text-gray-400' : ''}>
-                    {deliveryType === 'delivery' && canDelivery ? 'Incluido' : !canDelivery ? 'No aplica' : 'Gratis'}
+                  <span>{deliveryType === 'pickup' ? 'Retiro por local' : 'Envío'}</span>
+                  <span className={deliveryType === 'delivery' && canDelivery ? 'text-green-600' : deliveryType === 'pickup' ? 'text-green-600' : 'text-gray-400'}>
+                    {deliveryType === 'delivery' && canDelivery ? 'Incluido' : deliveryType === 'pickup' ? 'Gratis' : 'No aplica'}
                   </span>
                 </div>
               </div>
@@ -629,7 +629,7 @@ export function Checkout() {
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-gray-900">Total</span>
                   <span className="font-heading font-bold text-2xl text-mana-burgundy">
-                    ${(cartTotal + (deliveryType === 'delivery' ? 500 : 0)).toLocaleString()}
+                    ${cartTotal.toLocaleString()}
                   </span>
                 </div>
               </div>
