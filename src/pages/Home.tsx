@@ -96,7 +96,10 @@ export function Home() {
       {/* Top of Week - horizontal scroll like reference */}
       <section className="pb-8">
         <div className="container-app section-padding">
-          <h2 className="font-heading text-xl font-bold text-foreground mb-4">Lo más pedido</h2>
+          <h2 className="font-heading text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+            Lo más pedido
+            <ArrowRight className="w-5 h-5 text-mana-green" />
+          </h2>
         </div>
         <div className="flex overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory gap-[16px] px-[20px]">
           {topProducts.map((product) => (
