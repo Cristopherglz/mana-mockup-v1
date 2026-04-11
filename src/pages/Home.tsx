@@ -94,9 +94,9 @@ export function Home() {
       </section>
 
       {/* Top of Week - horizontal scroll like reference */}
-      <section className="pb-8">
+      <section className="pb-8 ml-[16px]">
         <div className="container-app section-padding">
-          <h2 className="font-heading text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="font-heading text-xl font-bold text-foreground mb-4 flex items-center gap-2 -ml-[16px]">
             Lo más pedido
             <ArrowRight className="w-5 h-5 text-mana-green" />
           </h2>
