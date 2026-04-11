@@ -277,12 +277,9 @@ export function Checkout() {
                           }`}
                         >
                           <Truck className={`w-6 h-6 ${deliveryType === 'delivery' ? 'text-mana-green' : 'text-gray-400'}`} />
-                          <div className="text-left">
-                            <p className={`font-medium ${deliveryType === 'delivery' ? 'text-mana-green' : 'text-gray-700'}`}>
+                          <p className={`font-medium ${deliveryType === 'delivery' ? 'text-mana-green' : 'text-gray-700'}`}>
                               Delivery
-                            </p>
-                            <p className="text-sm text-gray-500">$500</p>
-                          </div>
+                          </p>
                         </button>
                       ) : (
                         <div className="flex items-center gap-3 p-4 border-2 border-gray-100 rounded-xl bg-gray-50 opacity-60 cursor-not-allowed">
