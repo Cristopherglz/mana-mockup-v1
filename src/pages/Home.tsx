@@ -46,7 +46,7 @@ export function Home() {
       </section>
 
       {/* Delivery Banner */}
-      <section className="px-5 pb-5">
+      <section className="px-5 pb-5 border-0">
         <div className="container-app">
           <div className="bg-mana-green rounded-2xl p-5 text-white relative overflow-hidden shadow-md">
             <div className="absolute top-0 right-0 w-1/3 h-full bg-white/10 rounded-l-[60px]" />
@@ -72,7 +72,7 @@ export function Home() {
       {/* Promo Banner */}
       <section className="px-5 pb-6 shadow-none">
         <div className="container-app">
-          <div className="relative bg-mana-cream rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+          <div className="relative bg-mana-cream rounded-2xl overflow-hidden border shadow-sm border-muted">
             <div className="flex items-center">
               <div className="flex-1 p-5">
                 <h2 className="font-heading text-xl font-bold text-foreground">Pan de Campo</h2>
